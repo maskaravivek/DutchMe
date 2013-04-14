@@ -1,0 +1,444 @@
+﻿<phone:PhoneApplicationPage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
+    x:Class="DutchMe.MainPage" 
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768" 
+    d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+    <phone:PhoneApplicationPage.Resources>
+        <DataTemplate x:Name="lpkItemTemplate">
+            <TextBlock Text="{Binding Country}" />
+        </DataTemplate>
+        <DataTemplate x:Name="lpkFullItemTemplate">
+            <TextBlock Text="{Binding Country}" />
+        </DataTemplate>
+    </phone:PhoneApplicationPage.Resources>
+    <Grid x:Name="LayoutRoot" Background="Transparent" Loaded="LayoutRoot_Loaded">
+       <controls:Pivot Title="DutchMe">
+
+            <controls:PivotItem Header="people">
+
+                <Grid>
+                    <!--Double line list with text wrapping-->
+                    <ListBox x:Name="list2" Margin="0,2,-12,2" ItemsSource="{Binding Items}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <!-- other content of your listitem goes here-->
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu Name="MyContextMenu">
+                                            <toolkit:MenuItem Tag="{Binding name}" Header="clear dues" Tap="MenuItem_Tap_3"/>
+                                            <toolkit:MenuItem Header="delete" Tag="{Binding name}" Tap="MenuItem_Tap_1"/>
+                                            <toolkit:MenuItem Header="view history" Tag="{Binding message}" Tap="MenuItem_Tap_2"/>
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                    <StackPanel Orientation="Horizontal" Width="460" >
+                                    <Rectangle Height="auto" Width="10" Fill="{Binding category_color}" Margin="0,2"/>
+                                    <StackPanel Margin="0,0,0,17" Height="auto" Orientation="Vertical" Width="280">
+                                        <TextBlock Text="{Binding name}" TextWrapping="NoWrap" Margin="12,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="TextBlock_Tap_1"/>
+                                        <TextBlock Text="{Binding date}" TextWrapping="NoWrap" Margin="12,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding amount}" Tag="{Binding message}" FontSize="42" TextAlignment="Left" Foreground="{Binding color}" Tap="TextBlock_Tap_3" />
+                                </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Canvas x:Name="canvas1" Margin="0,-147,-12,2" Background="{StaticResource PhoneBackgroundBrush}" Visibility="Collapsed">
+                           <TextBlock TextWrapping="Wrap" Text="add" Height="85" Width="auto" FontSize="56" Padding="10,10,0,0" Canvas.Left="4" Canvas.Top="27"/>
+                        <ScrollViewer Canvas.Top="117" Height="575">
+                            <StackPanel Margin="0" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Name" Canvas.Top="117" Foreground="#FFB8B2B2" Padding="0,24,0,0" Margin="0,0,18,0"/>
+                                    <TextBox x:Name="add" Height="72" Canvas.Left="76" TextWrapping="Wrap" Text="name" Canvas.Top="85" Width="387" Padding="6,8,2,2" BorderThickness="0" GotFocus="TextBox_GotFocus_1"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" >
+                                    <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Balance" Canvas.Top="194" Foreground="#FFB8B2B2" Padding="0,24,0,0"/>
+                                    <TextBox x:Name="amount" Height="auto" Canvas.Left="92" TextWrapping="Wrap" Text="amount" Canvas.Top="162" Width="154" Padding="6,8,2,2" BorderThickness="0" GotFocus="TextBox_GotFocus_2"/>
+                                    <Image Height="64" Width="64" Source="/Images/appbar.addpicture.rest.png" Tap="Image_Tap_3" OpacityMask="{StaticResource PhoneAccentBrush}" Opacity="0.5"/>
+                                    <Image x:Name="img" Height="64" Width="48" Source="/Images/appbar.manage.rest.png" Tap="Image_Tap_1" Visibility="Collapsed"/>
+                                    <Image Height="64" Width="64" Source="/Images/appbar.edittext.rest.png" Tap="Image_Tap_2"/>
+                                   </StackPanel>
+                                <StackPanel Orientation="Horizontal" Width="460">
+                                    <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Status" Canvas.Top="258" Foreground="#FFB8B2B2" Padding="0,24,0,0" Margin="0,0,12,0"/>
+                                    <RadioButton x:Name="take" Content="Take" Canvas.Left="92" Canvas.Top="234" Width="143" RenderTransformOrigin="0.828,0.576" IsChecked="True"/>
+                                    <RadioButton x:Name="give" Content="Give" Canvas.Left="240" Canvas.Top="234" Width="145"/>
+                                </StackPanel>
+                                <StackPanel x:Name="stack4" Visibility="Collapsed">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Location" Canvas.Top="117" Foreground="#FFB8B2B2" Padding="0,24,0,0" Margin="0,0,18,0"/>
+                                        <!--<TextBlock Name="loc" Tap="location_Tap_1" FontSize="28"/>-->
+                                        <!--<TextBox Name="location_add" Text="my location" BorderThickness="0" Width="278" GotFocus="amt_spent_GotFocus_1"/>-->
+                                        <StackPanel>
+                                        <toolkit:ListPicker Height="auto" Width="260" ItemTemplate="{Binding lpkItemTemplate}" x:Name="list_loc_p" FullModeItemTemplate="{Binding lpkFullItemTemplate}" Margin="0" FontSize="20"/>
+                                        </StackPanel>
+                                            <Button Content="add" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_23" Height="66"/>
+
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Date" Canvas.Top="321" Foreground="#FFB8B2B2" Padding="0,24,0,0" Margin="0,0,32,0"/>
+                                        <toolkit:DatePicker x:Name="date" Canvas.Left="92" Canvas.Top="296" Width="199"/>
+                                        <toolkit:TimePicker x:Name="time" Width="168"/>
+                                    </StackPanel>
+                                    <StackPanel Name="stack9" Canvas.Left="104" Canvas.Top="373" Visibility="Collapsed">
+                                        <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="List" Canvas.Top="402" Foreground="#FFB8B2B2"/>
+                                        <ListBox x:Name="list1" Height="auto" Canvas.Left="104" Canvas.Top="373" Width="366" SelectionChanged="list1_SelectionChanged_1" Margin="10,0" Padding="10,0">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <toolkit:WrapPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="LimeGreen" Margin="4">
+                                                        <TextBlock Text="{Binding}" Margin="12,6"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                        <Button Content="New List" Canvas.Left="296" Canvas.Top="580" Click="Button_Click_11" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}"/>
+                                    </StackPanel>
+                                     </StackPanel>
+                                <StackPanel Name="stack6">
+                                    <StackPanel Canvas.Left="104" Canvas.Top="373">
+                                        <ListBox x:Name="list8">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="{Binding image}" Width="100" Height="80"/>
+                                                        <TextBlock Text="{Binding note}"/>
+
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </StackPanel>
+                                    
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="Save" Canvas.Left="5" Canvas.Top="617" Width="230" Click="Button_Click_2" Background="{StaticResource PhoneAccentBrush}" BorderThickness="0"/>
+                                    <Button Content="Cancel" Canvas.Left="240" Canvas.Top="617" Width="230" Click="Button_Click_1" Background="{StaticResource PhoneAccentBrush}" BorderThickness="0,0,0,0" Height="63"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Canvas>
+                    <Canvas x:Name="canvas3" Canvas.Left="10" Canvas.Top="10" Width="460" Background="{StaticResource PhoneBackgroundBrush}" Margin="0,-147,-4,10" Visibility="Collapsed">
+                        <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="new list" Canvas.Top="10" Height="60" Width="436" FontSize="48"/>
+                        <TextBox x:Name="list" TextWrapping="Wrap" Canvas.Top="70" Width="388" BorderThickness="0" Canvas.Left="68"/>
+                        <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Name" Canvas.Top="95" Foreground="#FFAEA0A0"/>
+                        <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Color" Canvas.Top="143" Foreground="#FFAEA0A0"/>
+                        <ListBox x:Name="list5" Height="463" Width="370" Canvas.Left="86" Canvas.Top="143" >
+                            <ListBox.ItemTemplate >
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                                        <Rectangle Fill="{Binding color1}" Height="48" Width="48" Tap="Rectangle_Tap_1"/>
+                                        <TextBlock Text="{Binding color_name}" Tag="{Binding color1}" FontSize="24" Margin="12,0,0,0" Tap="TextBlock_Tap_2"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <Button Content="add" Canvas.Left="10" Canvas.Top="611" Width="213" Background="{StaticResource PhoneAccentBrush}" BorderThickness="0" Click="Button_Click_10"/>
+                        <Button Content="cancel" Canvas.Left="228" Canvas.Top="611" Width="218" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_9"/>
+
+                    </Canvas>
+                    <Canvas x:Name="canvas2" Margin="-10,-147,-12,10" Background="{StaticResource PhoneBackgroundBrush}" Visibility="Collapsed">
+
+
+                        <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="transaction" Canvas.Top="10" Height="72" Width="278" FontSize="48"/>
+                        <StackPanel Margin="0,120">
+                            <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                                <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Amount" Canvas.Top="103" Foreground="#FFC3BBBB" Padding="0,24,0,0"/>
+                                <TextBox x:Name="update" Canvas.Left="90" TextWrapping="Wrap" Canvas.Top="82" Width="198" BorderThickness="0"/>
+                                <Image Height="64" Width="64" Source="/Images/appbar.addpicture.rest.png" OpacityMask="{StaticResource PhoneAccentBrush}" Opacity="0.5" Tap="Image_Tap_9"/>
+                                <Image Height="64" Width="64" Source="/Images/appbar.edittext.rest.png" Tap="Image_Tap_8"/>
+
+                                <!--<Button Content="Add details" Canvas.Left="288" Canvas.Top="82" Width="180" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_7"/>-->
+                            </StackPanel>
+                            <StackPanel x:Name="stack3" Orientation="Horizontal" Margin="10,0,0,0">
+                                <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Give/Take" Canvas.Top="169" Foreground="#FFC3BBBB" Padding="0,24,0,0"/>
+                                <RadioButton x:Name="ta" Content="Take" Canvas.Left="108" Canvas.Top="145" Width="175" IsChecked="True"/>
+                                <RadioButton x:Name="gi" Content="Give" Canvas.Left="288" Canvas.Top="145" Width="180"/>
+                            </StackPanel>
+                            <StackPanel Name="stack2" Visibility="Collapsed">
+                            <StackPanel Orientation="Horizontal" Margin="10,0,0,0" >
+                                <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Date" Canvas.Top="321" Foreground="#FFB8B2B2" Padding="0,24,0,0"/>
+                                <toolkit:DatePicker x:Name="date_add" Canvas.Left="92" Canvas.Top="296" Width="220"/>
+                                <toolkit:TimePicker x:Name="time_add" Canvas.Left="296" Canvas.Top="296" Width="180"/>
+                            </StackPanel>
+                            <StackPanel>
+                            <StackPanel Canvas.Left="104" Canvas.Top="373">
+                                <ListBox x:Name="list9">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{Binding image}" Width="100" Height="80"/>
+                                                <TextBlock Text="{Binding note}"/>
+
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                    <!--<Button Content="Add image/notes" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Tap="Button_Tap_3"/>-->
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Location" Foreground="#FFB8B2B2" Padding="0,24,0,0"/>
+                                        <StackPanel>
+                                            <toolkit:ListPicker Height="auto" Width="260" ItemTemplate="{Binding lpkItemTemplate}" x:Name="list_loc_p1" FullModeItemTemplate="{Binding lpkFullItemTemplate}" Margin="0" FontSize="20"/>
+                                        </StackPanel>
+                                        <Button Content="add" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_23" Height="66"/>
+                                    </StackPanel>
+                            </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,40,0,0">
+                                <Button Content="Add" Width="236" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_6"/>
+                                <Button Content="Cancel" Width="236" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_5"/>
+                            </StackPanel>
+
+                        </StackPanel>
+                        <TextBlock x:Name="nam" Canvas.Left="293" TextWrapping="Wrap" Canvas.Top="10" Width="175" FlowDirection="LeftToRight" TextAlignment="Right"/>
+                    </Canvas>
+                    <Canvas x:Name="canvas6" Background="{StaticResource PhoneBackgroundBrush}" Margin="0,-141,-12,10" Visibility="Collapsed" >
+                        <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="image/notes" Canvas.Top="10" Height="84" Width="436" FontSize="56"/>
+                        <StackPanel Margin="0,100,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Note" Canvas.Top="127" Foreground="#FFB9AFAF" Padding="0,24,0,0"/>
+                                <TextBox x:Name="note_p" Canvas.Left="54" TextWrapping="Wrap" Canvas.Top="99" Width="392" BorderThickness="0" AcceptsReturn="True"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Image" Canvas.Top="127" Foreground="#FFB9AFAF" Padding="0,24,0,0"/>
+                                <Image Width="150" Height="120" Name="picture_p"/>
+                                <StackPanel>
+                                    <Button Content="Choose picture" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_17"/>
+                                    <Button Content="Take picture" Background="{StaticResource PhoneAccentBrush}" BorderThickness="0" Click="Button_Click_16"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="add" Canvas.Left="10" Canvas.Top="489" Width="213" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_19" />
+                                <Button Content="cancel" Canvas.Left="233" Canvas.Top="489" Width="213" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_20"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Canvas>
+
+                </Grid>
+            </controls:PivotItem>
+
+            <!--Pivot item two-->
+            <controls:PivotItem Header="dutch"   >
+                <Grid>
+                    <Button Content="choose lists" HorizontalAlignment="Left" VerticalAlignment="Top" Width="225" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_3"/>
+                    <Button Content="choose people" HorizontalAlignment="Left" VerticalAlignment="Top" Width="225" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Margin="231,0,0,0" Click="Button_Click_4"/>
+                    <ScrollViewer Margin="0,68,0,0" >
+                    <StackPanel Margin="0,0,0,0" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListBox Grid.Row="0" x:Name="list3" >
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <toolkit:WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding name}" Tag="{Binding type}" BorderThickness="0" Tap="Button_Tap_1"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <ListBox Grid.Row="0" x:Name="list4" >
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <toolkit:WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding}" BorderThickness="0" Tap="Button_Tap_2" Background="{StaticResource PhoneAccentBrush}"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <StackPanel x:Name="stack1" Margin="0,0,0,0" Visibility="Collapsed">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Amount" Padding="5,18,0,0"/>
+                                    <TextBox HorizontalAlignment="Left" x:Name="dutch_amt" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" BorderThickness="0" InputScope="Number" GotFocus="dutch_amt_GotFocus"/>
+                                    <Image Height="64" Width="64" Source="/Images/appbar.addpicture.rest.png" Tap="Image_Tap_7" OpacityMask="{StaticResource PhoneAccentBrush}" Opacity="0.5"/>
+                                    <Image Height="64" Width="64" Source="/Images/appbar.edittext.rest.png" Tap="Image_Tap_10" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Width="460">
+                                    <TextBlock TextWrapping="Wrap" Text="Status" Foreground="#FFB8B2B2" Padding="0,24,0,0" Margin="0,0,12,0"/>
+                                    <RadioButton x:Name="d_take" Content="Take"  Width="143" RenderTransformOrigin="0.828,0.576" IsChecked="True"/>
+                                    <RadioButton x:Name="d_give" Content="Give" Width="145"/>
+                                </StackPanel>
+                                <!--<Button Content="add details" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="180" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_8"/>-->
+                        </StackPanel>
+                            
+                            <StackPanel Name="stack5" Visibility="Collapsed">
+                            
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Date" Foreground="#FFB8B2B2" Padding="0,24,0,0" Margin="0,0,32,0"/>
+                                    <toolkit:DatePicker x:Name="d_date" Width="199"/>
+                                    <toolkit:TimePicker x:Name="d_time" Width="168"/>
+                                </StackPanel>
+                                <StackPanel Canvas.Left="104" Canvas.Top="373">
+                                    <ListBox x:Name="list7">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{Binding image}" Width="100" Height="80"/>
+                                                    <TextBlock Text="{Binding note}"/>
+
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <!--<Button Content="Add image/notes" Tap="Button_Tap_3" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}"/>-->
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Location" Foreground="#FFB8B2B2" Padding="0,24,0,0"/>
+                                    <StackPanel>
+                                        <toolkit:ListPicker Height="auto" Width="260" ItemTemplate="{Binding lpkItemTemplate}" x:Name="list_loc_d" FullModeItemTemplate="{Binding lpkFullItemTemplate}" Margin="0" FontSize="20"/>
+                                    </StackPanel>
+                                    <Button Content="add" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_23" Height="66"/>
+
+                                </StackPanel>
+                                </StackPanel>
+                        <Button Name="ad" Content="Dutch" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_13" Visibility="Collapsed"/>
+
+                    </StackPanel>
+                    </ScrollViewer>
+                    <Canvas x:Name="canvas5" Background="{StaticResource PhoneBackgroundBrush}" Margin="0,-141,-15,10" Visibility="Collapsed" >
+                        <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="image/notes" Canvas.Top="10" Height="84" Width="436" FontSize="56"/>
+                        <StackPanel Margin="0,100,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Note" Canvas.Top="127" Foreground="#FFB9AFAF" Padding="0,24,0,0"/>
+                                <TextBox x:Name="note_d" Canvas.Left="54" TextWrapping="Wrap" Canvas.Top="99" Width="392" BorderThickness="0" AcceptsReturn="True"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Image" Canvas.Top="127" Foreground="#FFB9AFAF" Padding="0,24,0,0"/>
+                                <Image Width="150" Height="120" x:Name="picture_d"/>
+                                <StackPanel>
+                                    <Button Content="Choose picture" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_17"/>
+                                    <Button Content="Take picture" Background="{StaticResource PhoneAccentBrush}" BorderThickness="0" Click="Button_Click_16"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="add" Canvas.Left="10" Canvas.Top="489" Width="213" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_21"/>
+                                <Button Content="cancel" Canvas.Left="233" Canvas.Top="489" Width="213" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_22"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Canvas>
+                </Grid>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="me" Loaded="PivotItem_Loaded_1" >
+                <Grid>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Amount" Foreground="#FFB8B2B2" Padding="0,24,0,0"/>
+                            <TextBox Name="amt_spent" Text="spent" BorderThickness="0" Width="160" GotFocus="amt_spent_GotFocus_1"/>
+                            <!--<Button Content="Add details" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_18"/>-->
+                            <Image Height="64" Width="64" Source="/Images/appbar.addpicture.rest.png" Tap="Image_Tap_5" OpacityMask="{StaticResource PhoneAccentBrush}" Opacity="0.5"/>
+                            <Image Height="64" Width="64" Source="/Images/appbar.edittext.rest.png" Tap="Image_Tap_6"/>
+                            <Button Name="ad_me" Content="Add" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="ad_me_Click" />                        </StackPanel>
+                        <StackPanel Name="stack8" Visibility="Collapsed">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Date" Foreground="#FFB8B2B2" Padding="0,24,0,0" Margin="0,0,32,0"/>
+                                <toolkit:DatePicker x:Name="me_date" Width="199"/>
+                                <toolkit:TimePicker x:Name="me_time" Width="183"/>
+                            </StackPanel>
+                        <StackPanel Canvas.Left="104" Canvas.Top="373">
+                            <ListBox x:Name="list6">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{Binding image}" Width="100" Height="80"/>
+                                            <TextBlock Text="{Binding note}"/>
+
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <!--<Button Content="Add image/notes" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Tap="Button_Tap_3"/>-->
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Location" Foreground="#FFB8B2B2" Padding="0,24,0,0"/>
+                            <!--<TextBox Name="location" Text="my location" BorderThickness="0" Width="290" GotFocus="location_GotFocus_1"/>
+                            <Button Content="find" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}"/>-->
+                                <StackPanel>
+                                    <toolkit:ListPicker Height="auto" Width="260" ItemTemplate="{Binding lpkItemTemplate}" x:Name="list_loc_m" FullModeItemTemplate="{Binding lpkFullItemTemplate}" Margin="0" FontSize="20"/>
+                                </StackPanel>
+                                <Button Content="add" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_23" Height="66"/>
+                        </StackPanel>
+                        </StackPanel>
+                        <!--<Button Name="ad_me" Content="Add" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="ad_me_Click" />-->
+                        <ListBox x:Name="list10" Margin="0,50,0,0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Width="460" >
+                                        <Rectangle Height="auto" Width="10" Fill="Lime"  Margin="0,2"/>
+                                        <StackPanel Margin="0,0,0,17" Height="auto" Orientation="Vertical" Width="280">
+                                            <TextBlock Text="{Binding name}" TextWrapping="NoWrap" Margin="12,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" />
+                                            <TextBlock Text="{Binding date}" TextWrapping="NoWrap" Margin="12,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding amount}" Tag="{Binding message}" FontSize="42" TextAlignment="Left" Foreground="{Binding color}" Tap="TextBlock_Tap_3" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                    <Canvas x:Name="canvas4" Background="{StaticResource PhoneBackgroundBrush}" Margin="0,-141,0,10" Visibility="Collapsed" >
+                        <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="image/notes" Canvas.Top="10" Height="84" Width="436" FontSize="56"/>
+                            <StackPanel Margin="0,100,0,0">
+                            <StackPanel Orientation="Horizontal">
+                        <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Note" Canvas.Top="127" Foreground="#FFB9AFAF" Padding="0,24,0,0"/>
+                        <TextBox x:Name="note" Canvas.Left="54" TextWrapping="Wrap" Canvas.Top="99" Width="392" BorderThickness="0" AcceptsReturn="True"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="Image" Canvas.Top="127" Foreground="#FFB9AFAF" Padding="0,24,0,0"/>
+                                <Image Width="150" Height="120" Name="picture"/>
+                                <StackPanel>
+                                    <Button Content="Choose picture" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_17"/>
+                                    <Button Content="Take picture" Background="{StaticResource PhoneAccentBrush}" BorderThickness="0" Click="Button_Click_16"/>
+                                </StackPanel>
+                            </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                <Button Content="add" Canvas.Left="10" Canvas.Top="489" Width="213" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_15"/>
+                                <Button Content="cancel" Canvas.Left="233" Canvas.Top="489" Width="213" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_14"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Canvas>
+                </Grid>
+            </controls:PivotItem>
+        </controls:Pivot>
+        <Canvas x:Name="canvas7" HorizontalAlignment="Left" Height="267" Margin="0,-14,0,0" VerticalAlignment="Top" Width="480" Background="{StaticResource PhoneBackgroundBrush}" Visibility="Collapsed">
+            <TextBlock Canvas.Left="10" TextWrapping="Wrap" Text="location" Canvas.Top="10" Height="78" Width="460" FontSize="56"/>
+            <TextBox x:Name="loc_vvk" Canvas.Left="14" TextWrapping="Wrap" Text="your location" Canvas.Top="93" Width="456" BorderThickness="0"/>
+            <Button Content="Add" Canvas.Top="161" Width="230" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Click="Button_Click_25"/>
+            <Button Content="Cancel" Canvas.Top="161" Width="235" BorderThickness="0" Background="{StaticResource PhoneAccentBrush}" Canvas.Left="235" Click="Button_Click_24"/>
+        </Canvas>
+
+    </Grid>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="settings" Click="ApplicationBarMenuItem_Click_4"/>
+
+                <shell:ApplicationBarMenuItem Text="share" Click="ApplicationBarMenuItem_Click_1"/>
+                <shell:ApplicationBarMenuItem Text="feedback" Click="ApplicationBarMenuItem_Click_2"/>
+                <shell:ApplicationBarMenuItem Text="how to" Click="ApplicationBarMenuItem_Click_3" />
+
+            </shell:ApplicationBar.MenuItems>
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.add.rest.png" Text="add" Click="ApplicationBarIconButton_Click_1" />
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.heart2.rest.png" Text="rate" Click="ApplicationBarIconButton_Click_2" />
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.refresh.rest.png" Text="refresh" Click="ApplicationBarIconButton_Click_3" />
+
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+</phone:PhoneApplicationPage>
